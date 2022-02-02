@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+
 
 class User extends Authenticatable
 {
@@ -41,4 +42,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    const USER_TYPE_ADMIN = 1;
+    const USER_TYPE_SUPER_USER = 2;
+    const USER_TYPE_NORMAL_USER = 3;
+    const USER_TYPE_COMPANY = 4;
+
+    protected $attributes = ['role_id' => self::USER_TYPE_NORMAL_USER];
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }
