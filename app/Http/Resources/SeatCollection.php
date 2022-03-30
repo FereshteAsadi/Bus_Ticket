@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class SeatCollection extends ResourceCollection
 {
+    public static $wrap = 'reserved';
     /**
      * Transform the resource collection into an array.
      *

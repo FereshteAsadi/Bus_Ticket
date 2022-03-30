@@ -2,10 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bus;
 use Illuminate\Http\Request;
+use App\Http\Requests\BusRequest;
+use App\Http\Resources\BusResource;
+use Illuminate\Support\Facades\Gate;
+use App\Repositories\BusesRepository;
 
 class BusController extends Controller
 {
+    public $Bus;
+
+    public function __construct(BusesRepository $Buses_Repository)
+    {
+        $this->Bus = $Buses_Repository;
+    }
     public function index()
     {
         return BusResource::collection(Bus::all());
@@ -17,14 +28,11 @@ class BusController extends Controller
         if (!Gate::allows('bus_create', $request->user_id)) {
             abort(403);
         };
-//repository
-        Bus::create([
-            'capacity' => $request->capacity,
-            'name' => $request->name,
-            'is_vip' => $request->is_vip,
-            'user_id' => $request->user_id,
-        ]);
+
+        $Bus=$this->Bus->createBuses($request->all());
+
         return response()->json(array('message' => 'وسیله نقلیه شما با موفقیت اضافه شد.'), 201);
+
     }
 
     public function update(BusRequest $request, Bus $bus)
@@ -43,8 +51,8 @@ class BusController extends Controller
         if (!Gate::allows('bus_access', $bus)) {
             abort(403);
         };
-        $bus->delete();
+        $archive = $this->Ticket->archive($bus->id);
+        return response()->json(['message'=>$archive]);
 
-        return response()->json(array('message' => 'مورد انتخابی با موفقیت حذف شد.'), 200);
     }
 }

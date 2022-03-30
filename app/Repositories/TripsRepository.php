@@ -5,23 +5,21 @@ namespace App\Repositories;
 use App\Models\Trip;
 use Illuminate\Support\Facades\DB;
 
-class TicketsRepository
+class TripsRepository
 {
-    public function CreateNewTicket($data){
+    public function createtrip($data){
         return Trip::create([
-            'license_plate' => $data['license_plate'] ,
-            'passenger' => $data['passenger'] ,
-            'final_destination' => $data['final_destination'] ,
-            'secondary_destination' => $data['secondary_destination'] ,
-            'destination_terminal' => $data['license_plate'] ,
-            'origin' => $data['origin'] ,
-            'origin_terminal' => $data['origin_terminal'] ,
-            'type' => $data['type'] ,
-            'info' => $data['info'] ,
+
+            'origin' => $data['origin'],
+            'price' => $data['price'],
+            'destination' => $data['destination'],
+            'departure_time' => $data['departure_time'],
+            'arrival_time' => $data['arrival_time'],
+            'bus_id' => $data['bus_id'],
 
         ]);
     }
-    public function edit($data,$id){
+    public function update($data,$id){
         return Trip::where('id', $id)->update([
             'license_plate' => $data['license_plate'] ,
             'passenger' => $data['passenger'] ,
